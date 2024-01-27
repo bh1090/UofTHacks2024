@@ -22,22 +22,24 @@ def get_location_view(request):
     address = get_address(latitude, longitude)
 
     # Generate summary of the location with Cohere
-    summary = get_summary(address)
+    lst = get_cards(address)
 
     # Create JSON response containing the image URL
     response_data = {
         'image_urls': image_urls,
         'address': address,
-        'summary': summary
+        'summary': lst[0],
+        'card1': lst[1],
+        'card2': lst[2]
     }
 
     return JsonResponse(response_data)
 
 
-def get_image_urls(coordinate: tuple[str, str]) -> list[str]:
+def get_image_urls(coordinate: tuple[str, str]) -> dict[str, str]:
     panos = search_panoramas(lat=float(coordinate[0]), lon=float(coordinate[1]))
     pano_ids = {x.pano_id: x.date for x in panos if x.date}
-    results = []
+    results = {}
     dir = f"images/{coordinate[0]},{coordinate[1]}/"
     if not os.path.isdir(f"./{dir}"):
         os.mkdir(f"./{dir}")
@@ -46,7 +48,7 @@ def get_image_urls(coordinate: tuple[str, str]) -> list[str]:
         if not os.path.exists(f"./{name}"):
             image = get_streetview(pano_id=id, api_key="AIzaSyDpgOD3J5ZEeh8CWPTexxKqPY8kgxyZwB4")
             image.save(f"{name}", "jpeg")
-        results.append(name)
+        results[pano_ids[id]] = name
     return results
 
 
@@ -70,5 +72,7 @@ def get_address(latitude: str, longitude: str) -> str:
     return re.sub(r'[^\x00-\x7F]+', '', address)
 
 
-def get_summary(address: str) -> str:
-    return ''
+def get_cards(address: str) -> list[str]:
+    lst = []
+    assert len(lst) == 3
+    return lst
