@@ -1,11 +1,16 @@
-import React, { useState, useRef } from 'react';
-import { GoogleMap, LoadScript, Marker, Autocomplete } from '@react-google-maps/api';
-import mapStyles from './mapStyles.json';
-import './Map.css';
+import React, { useState, useRef } from "react";
+import {
+  GoogleMap,
+  LoadScript,
+  Marker,
+  Autocomplete,
+} from "@react-google-maps/api";
+import mapStyles from "./mapStyles.json";
+import "./Map.css";
 
 const mapContainerStyle = {
-  width: '100%',
-  height: '400px',
+  width: "100%",
+  height: "400px",
 };
 
 const initialCenter = {
@@ -21,6 +26,11 @@ const MapComponent = () => {
   const [center, setCenter] = useState(initialCenter);
   const [autocomplete, setAutocomplete] = useState(null);
 
+  const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+
+  if (!googleMapsApiKey) {
+    console.error("google map api key NOT found: ", googleMapsApiKey);
+  }
   const onLoad = (autocompleteInstance) => {
     setAutocomplete(autocompleteInstance);
   };
@@ -33,14 +43,14 @@ const MapComponent = () => {
         lng: place.geometry.location.lng(),
       });
     } else {
-      console.log('Autocomplete is not loaded yet!');
+      console.log("Autocomplete is not loaded yet!");
     }
   };
 
   return (
     <LoadScript
-      googleMapsApiKey="AIzaSyBrQv-SiO5LK52NoNWVIS1uGM3wxFnjR7g"
-      libraries={['places']} // Add this prop to load the Places library
+      googleMapsApiKey={googleMapsApiKey}
+      libraries={["places"]} // Add this prop to load the Places library
     >
       <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
         <input
@@ -60,7 +70,7 @@ const MapComponent = () => {
             position: "absolute",
             top: "10px",
             left: "50%",
-            marginLeft: "-120px" // Half of the width to center it
+            marginLeft: "-120px", // Half of the width to center it
           }}
         />
       </Autocomplete>
