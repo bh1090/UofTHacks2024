@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   GoogleMap,
   LoadScript,
@@ -7,6 +7,9 @@ import {
 } from "@react-google-maps/api";
 import mapStyles from "./mapStyles.json";
 import "./Map.css";
+import { mapsLibConfig } from "../config/googleMapsLibConfig";
+import axios from "axios";
+import redDot from "../images/red-dot.png";
 
 const mapContainerStyle = {
   width: "100%",
@@ -22,36 +25,65 @@ const options = {
   styles: mapStyles,
 };
 
+if (!redDot) {
+  console.log("Img not loaded yet");
+}
 const MapComponent = () => {
   const [center, setCenter] = useState(initialCenter);
   const [autocomplete, setAutocomplete] = useState(null);
+
+  const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
 
   const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   if (!googleMapsApiKey) {
     console.error("google map api key NOT found: ", googleMapsApiKey);
   }
+
+  useEffect(() => {
+    const sendCoordinates = async () => {
+      const sendLat = coordinates.lat;
+      const sendLng = coordinates.lng;
+
+      //change as need
+      const localPort = 5000;
+      const res = await axios.get(
+        `http://localhost:${localPort}/get-lcoation?lat=${sendLat}&lon=${sendLng}`
+      );
+
+      console.log("res data axios get: ", res.data);
+    };
+
+    sendCoordinates();
+  }, [coordinates]);
+
   const onLoad = (autocompleteInstance) => {
     setAutocomplete(autocompleteInstance);
   };
 
   const onPlaceChanged = () => {
+    console.log("auto complelte: ", autocomplete);
     if (autocomplete !== null) {
       const place = autocomplete.getPlace();
+
+      console.log("place from autcomplete.getPlace()", place);
+      const lat = place.geometry.location.lat();
+      const lng = place.geometry.location.lng();
+
+      console.log("lat and long: ", lat, " ", lng);
       setCenter({
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng(),
+        lat,
+        lng,
       });
+
+      setCoordinates({ lat, lng });
     } else {
       console.log("Autocomplete is not loaded yet!");
     }
   };
 
   return (
-    <LoadScript
-      googleMapsApiKey={googleMapsApiKey}
-      libraries={["places"]} // Add this prop to load the Places library
-    >
+    <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={mapsLibConfig}>
       <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
         <input
           type="text"
@@ -70,7 +102,7 @@ const MapComponent = () => {
             position: "absolute",
             top: "10px",
             left: "50%",
-            marginLeft: "-120px", // Half of the width to center it
+            marginLeft: "-120px",
           }}
         />
       </Autocomplete>
@@ -80,7 +112,15 @@ const MapComponent = () => {
         zoom={13}
         options={options}
       >
-        <Marker position={center} visible={true} />
+        <Marker
+          position={center}
+          // position={coordinates}
+          visible={true}
+          icon={{
+            url: redDot,
+            // scaledSize: new window.google.maps.Size(40, 40), // size
+          }}
+        />
       </GoogleMap>
     </LoadScript>
   );
