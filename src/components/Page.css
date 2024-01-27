@@ -1,0 +1,122 @@
+body, html {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #d7c29b; /* Cream color for the page background */
+}
+
+.title-bar {
+  text-align: center;
+  background: transparent;
+  padding: 10px 20px;
+  color: #ffffff; /* Title color */
+}
+
+.container {
+  font-family: 'Arial', sans-serif;
+  background: #fff9ef;
+  width: 700px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  padding: 20px;
+}
+
+header {
+  display: flex;
+  justify-content: center; 
+  padding-bottom: 20px;
+  border-bottom: 2px solid #3a2c2a;
+}
+
+header h1 {
+  font-size: 20px;
+  color: #333;
+}
+
+.typeAnimation {
+  font-size: 25px;
+  color: #3a2c2a;
+  border-bottom: 2px solid #3a2c2a; 
+  padding-bottom: 5px;
+  font-weight: bold;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center; /* Center navigation links */
+  gap: 25px;
+  font-size: 1.2em; /* Increase the font size for navigation */
+  border-bottom: 2px solid #3a2c2a; 
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #333;
+  padding-bottom: 5px; /* Optional: Adds space between the link text and the underline */
+  display: inline-block; 
+}
+
+
+main {
+  display: flex;
+  justify-content: center; /* Center main content */
+  padding: 20px;
+}
+
+.main-content, .sidebar {
+  padding: 10px;
+  color: #333;
+}
+
+.main-content {
+  flex: 2; /* Increase the flex value to give more space */
+}
+
+.sidebar {
+  flex: 1; /* Assign flex to control width */
+}
+
+.buttons button {
+  background: #f4d2c2;
+  color: white;
+  border: none;
+  margin-left: 10px;
+  cursor: pointer;
+  font-weight: bold; /* Make the text bold */
+}
+
+.sidebar img {
+  width: 100%;
+  height: auto;
+}
+
+button {
+  margin-left: 10px;
+}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+  }
+
+  main {
+    flex-direction: column;
+  }
+
+  .main-content, .sidebar {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .buttons {
+    flex-direction: column; /* Stack buttons vertically on smaller screens */
+
+  }
+
+  .buttons button {
+    width: 100%; /* Full width buttons on smaller screens */
+    margin: 10px 0; /* Adjust margin for vertical stacking */
+  }
+}
