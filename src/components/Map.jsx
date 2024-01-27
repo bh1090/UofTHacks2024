@@ -1,5 +1,5 @@
-import React from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import React, { useState, useRef } from 'react';
+import { GoogleMap, LoadScript, Marker, Autocomplete } from '@react-google-maps/api';
 import mapStyles from './mapStyles.json';
 import './Map.css';
 
@@ -8,7 +8,7 @@ const mapContainerStyle = {
   height: '400px',
 };
 
-const center = {
+const initialCenter = {
   lat: 43.6607, // latitude
   lng: -79.39663, // longitude
 };
@@ -17,29 +17,60 @@ const options = {
   styles: mapStyles,
 };
 
-
 const MapComponent = () => {
+  const [center, setCenter] = useState(initialCenter);
+  const [autocomplete, setAutocomplete] = useState(null);
+
+  const onLoad = (autocompleteInstance) => {
+    setAutocomplete(autocompleteInstance);
+  };
+
+  const onPlaceChanged = () => {
+    if (autocomplete !== null) {
+      const place = autocomplete.getPlace();
+      setCenter({
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      });
+    } else {
+      console.log('Autocomplete is not loaded yet!');
+    }
+  };
+
   return (
     <LoadScript
-      googleMapsApiKey="AIzaSyBrQv-SiO5LK52NoNWVIS1uGM3wxFnjR7g" // API key here
+      googleMapsApiKey="AIzaSyBrQv-SiO5LK52NoNWVIS1uGM3wxFnjR7g"
+      libraries={['places']} // Add this prop to load the Places library
     >
+      <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
+        <input
+          type="text"
+          placeholder="Search a location"
+          style={{
+            boxSizing: `border-box`,
+            border: `1px solid transparent`,
+            width: `240px`,
+            height: `32px`,
+            padding: `0 12px`,
+            borderRadius: `3px`,
+            boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+            fontSize: `14px`,
+            outline: `none`,
+            textOverflow: `ellipses`,
+            position: "absolute",
+            top: "10px",
+            left: "50%",
+            marginLeft: "-120px" // Half of the width to center it
+          }}
+        />
+      </Autocomplete>
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         center={center}
         zoom={13}
         options={options}
       >
-        {/* Child components like markers can go here */}
-        <Marker
-          position={{ lat: -34.397, lng: 150.644 }} // Example marker position
-          icon={{
-            path: 'M16 0C7.164 0 0 7.164 0 16s16 48 16 48s16-48 16-48S24.836 0 16 0zm0 28c-3.313 0-6-2.687-6-6s2.687-6 6-6s6 2.687 6 6s-2.687 6-6 6zm0 0',
-            fillColor: 'red', // Marker color
-            fillOpacity: 1, // Marker opacity
-            strokeWeight: 0, // No border
-            scale: 1, // Marker size
-          }}
-        />
+        <Marker position={center} visible={true} />
       </GoogleMap>
     </LoadScript>
   );
