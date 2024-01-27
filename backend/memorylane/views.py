@@ -8,6 +8,9 @@ from streetview import get_streetview
 import os
 import requests
 import regex as re
+import cohere
+import random
+
 
 
 def get_location_view(request):
@@ -73,6 +76,87 @@ def get_address(latitude: str, longitude: str) -> str:
 
 
 def get_cards(address: str) -> list[str]:
+
+    # Dynamic values provided by the google maps api.
+
+    summaryDict = {}
+    query1
+    query2
+    query3
     lst = []
     assert len(lst) == 3
+
+    summaryPrompt = ["Give me a list of 1 historical fact/post about " + address + " or city bof this address: " + address + ". No filler sentences needed, list only the fact.",
+                    "Generate 2 brief facts about the local traditions followed in this area" + address,
+                    "Generate some information about the historical significance of following area:" + address
+    ]
+
+    query1 = get_response(summaryPrompt[0], 0.750)
+    query2 = get_response(summaryPrompt[1], 0.750)
+    query3 = get_response(summaryPrompt[2], 2 )
+
+    summaryDict["historical facts"] =  query1
+    summaryDict["Local Traditions"] = query2
+    summaryDict["Historical Significance of area"] = query3
+    
+
+
+    finalSummary = "Write a short introductory hook for a blog post byrefining the data given in the 3 documents."
+
+    # cohere api key, keep secret!!
+    co = cohere.Client("")
+
+    co.chat(
+    model= "command",
+    message= finalSummary,
+    documents= [summaryDict])
+    summary_paragraph = co.generations[0].text
+    lst[0] = summary_paragraph
+    
+
+
+    prompt = ["Generate a short poem relating to " + address,
+            "Generate a short story relating to the " + address,
+            "Generate a haiku relating to the " + address,
+            "Generate a short story of a person's experience on or near " + address,
+            "Generate a movie quote/ related to this location: " + address + "List the year that movie was released." ,
+            "Generate 1 trivia question relating to this area near this area/ country: " + address,
+            "Generate a fact about this country in " + address + "'s national language"
+            ]
+
+    # setting for how accurate or creative you want the model to be.
+    temperature = [ 3,
+                    3,
+                    3.5,
+                    2,
+                    2,
+                    1.5,
+                    1.0
+    ]
+
+
+
+    randomNum = random.randrange(len(prompt))
+
+    promptt = prompt[randomNum]
+    
+    list[1] = get_response(promptt, temperature[randomNum])
+    
+    randomNum = random.randrange(len(prompt))
+    promptt = prompt[randomNum]
+
+    list[2] = get_response(promptt, temperature[randomNum])
+    
     return lst
+
+def get_response(param, param2):
+    co = cohere.Client("")
+    response = co.generate(
+        model='command-nightly',
+        prompt = param,
+        max_tokens=200, # This parameter is optional.
+        temperature=param2)
+
+    intro_paragraph = response.generations[0].text
+    print(intro_paragraph)
+    return intro_paragraph
