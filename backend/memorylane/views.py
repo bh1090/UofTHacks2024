@@ -35,11 +35,14 @@ def generate_image_urls(coordinate):
     panos = search_panoramas(lat=coordinate[0], lon=coordinate[1])
     pano_ids = {x.pano_id: x.date for x in panos if x.date}
     results = []
+    dir = f"images/{coordinate[0]},{coordinate[1]}/"
+    if not os.path.isdir(f"./{dir}"):
+        os.mkdir(f"./{dir}")
     for id in pano_ids.keys():
-        name = f"{coordinate[0]},{coordinate[1]}|{pano_ids[id]}.jpg"
-        if not os.path.isfile(f"./memorylane/images/{name}"):
+        name = f"{dir}{pano_ids[id]}.jpg"
+        if not os.path.exists(f"./{name}"):
             image = get_streetview(pano_id=id, api_key="AIzaSyDpgOD3J5ZEeh8CWPTexxKqPY8kgxyZwB4")
-            image.save(f"./memorylane/images/{name}", "jpeg")
+            image.save(f"{name}", "jpeg")
         results.append(name)
     return results
 
