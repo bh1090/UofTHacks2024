@@ -10,7 +10,7 @@ import json
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
-from fetch_images import googleImageAPI
+from . import fetch_images
 
 cred = credentials.Certificate('./memorylane-412506-8c9829f4fd27.json')
 app = firebase_admin.initialize_app(cred)
@@ -38,8 +38,8 @@ def get_location_view(request):
     image_urls = image_urls_future.result()
 
     if image_urls == {}:
-        url = googleImageAPI(address)
-        image_urls = {'': url}
+        url = fetch_images.googleImageAPI(address)
+        image_urls = {'Online image': url}
 
     cards = cards_future.result()
     posts = posts_future.result()
@@ -70,7 +70,7 @@ def get_image_urls(latitude, longitude):
         if not os.path.exists(f"./{name}"):
             image = get_streetview(pano_id=pano_id, api_key="AIzaSyDx7Obk-QIrQWTb0CmOlv0SbMVI20cCfF0")
             image.save(f"{name}", "jpeg")
-        results[date] = name
+        results[date] = 'http://localhost:8000/' + name
     return results
 
 

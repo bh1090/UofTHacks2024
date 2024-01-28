@@ -22,7 +22,7 @@ def googleImageAPI(address):
             return []
 
     # Example usage
-    api_key = "AIzaSyAGGLLBNcQSKGzJWlv2xIcIDviogUIU2gY"
+    api_key = "AIzaSyDx7Obk-QIrQWTb0CmOlv0SbMVI20cCfF0"
     cx = "c7b5d072f73d642a3"
     query = address
 
