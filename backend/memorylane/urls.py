@@ -23,4 +23,5 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('get-location/', views.get_location_view, name='get_location'),
+    path('save-post/', views.save_post, name='save_post')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
