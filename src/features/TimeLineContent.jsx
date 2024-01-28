@@ -27,17 +27,19 @@ const TimeLineContent = ({ imgData, index, imgDataTextInfo }) => {
             height: "auto",
             marginTop: "20px",
             margin: "5px",
-            // /borderRadius: '5%'/
           }}
         />
-        <p>Year: {imgData?.year}</p>
+        <p>Year: {imgData?.year || "User uploaded"}</p>
       </div>
-      <div className="content-size">
+      <div className="content-size-text">
         <p>
-          Card1: {imgDataTextInfo?.card1}
-          Card2: {imgDataTextInfo?.card2}
+          {imgData?.card1}
+          <br></br>
+          {imgData?.card2}
         </p>
-        <p>Summary: {imgDataTextInfo?.summary}</p>
+        <p>
+          <strong>Summary: </strong> {imgDataTextInfo?.summary}
+        </p>
       </div>
     </div>
     // </div>

@@ -12,7 +12,7 @@ import axios from "axios";
 import redDot from "../images/red-dot.png";
 import TimeLinePage from "../features/TimeLinePage";
 
-import {getDownloadURL, getStorage, listAll, ref} from "firebase/storage"
+import { getDownloadURL, getStorage, listAll, ref } from "firebase/storage";
 
 const mapContainerStyle = {
   width: "100%",
@@ -61,32 +61,29 @@ const MapComponent = ({ showImgData, setCanSubmit }) => {
       const localPort = 8000;
 
       try {
-
         //get firebase imgs
 
-        const storage = getStorage()
-        const storageRef = ref(storage, "nostalgia")
+        const storage = getStorage();
+        const storageRef = ref(storage, "nostalgia");
 
-        const filesResult = await listAll(storageRef)
+        const filesResult = await listAll(storageRef);
 
-        const promiseOperations = filesResult.items.map( async (img) => {
+        const promiseOperations = filesResult.items.map(async (img) => {
+          const downloadUrl = await getDownloadURL(img);
 
-          const downloadUrl = await getDownloadURL(img)
+          console.log("downlodadulr: ", downloadUrl);
 
-          console.log("downlodadulr: ",downloadUrl);
+          return downloadUrl;
+        });
 
-          return downloadUrl
-        })
-
-        const imgDownloadUrls = await Promise.all(promiseOperations)
+        const imgDownloadUrls = await Promise.all(promiseOperations);
 
         const formattedImgDataArr = imgDownloadUrls.map((url) => {
-
           //if (!year)
-          const imgObj = {year: "" , imgSrc: url}
-          console.log('imgObj firebase formatted: ', imgObj);
-          return imgObj
-        })
+          const imgObj = { year: "", imgSrc: url };
+          console.log("imgObj firebase formatted: ", imgObj);
+          return imgObj;
+        });
         // const res = await axios.get(
         //   `http://localhost:${localPort}/get-location?lat=${sendLat}&lon=${sendLng}`
         // );
@@ -97,7 +94,7 @@ const MapComponent = ({ showImgData, setCanSubmit }) => {
         //   console.error("Not an object");
         //   return null
         // }
-      //  //convert imgDataObj.image_urls to array AND reverse
+        //  //convert imgDataObj.image_urls to array AND reverse
         // const imgArray = Object.entries(imgDataObj.image_urls).map(
         //   ([year, imgSrc]) => {
         // const formattedObj = {
@@ -109,8 +106,8 @@ const MapComponent = ({ showImgData, setCanSubmit }) => {
         // ).reverse();
         // console.log("converted reversed array: ", imgArray);
         // setImgDataArr((prev) => [...prev, ...imgArray, ...formattedImgDataArr ]);
-        setImgDataArr((prev) => [...prev, ...formattedImgDataArr ]);
-        
+        setImgDataArr((prev) => [...prev, ...formattedImgDataArr]);
+
         // setImgDataTextInfo((prev) => ({
         //   ...prev,
         //   address: imgDataObj.address,
@@ -119,10 +116,7 @@ const MapComponent = ({ showImgData, setCanSubmit }) => {
         //   summary: imgDataObj.summary,
         // }));
 
-
         ////setCanSubmit(true);
-        
-
       } catch (error) {
         console.error(error);
       }
