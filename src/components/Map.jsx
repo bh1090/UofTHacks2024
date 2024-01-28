@@ -46,7 +46,7 @@ const MapComponent = () => {
       const sendLng = coordinates.lng;
 
       //change as need
-      const localPort = 5000;
+      const localPort = 8000;
       const res = await axios.get(
         `http://localhost:${localPort}/get-location?lat=${sendLat}&lon=${sendLng}`
       );
