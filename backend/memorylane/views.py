@@ -3,10 +3,10 @@ from django.http import JsonResponse
 from streetview import search_panoramas, get_streetview
 import os
 import requests
-import regex as re
+import re
 import cohere
 import random
-
+import json
 
 def get_location_view(request):
     latitude = request.GET.get('lat')
@@ -77,11 +77,11 @@ def get_cards(address):
     lst = []
 
     summary_prompt = [
-        "Describe the location " + address + ". No filler sentences needed.",
-        "Generate 2 brief facts about the local traditions followed in this area" + address,
+        "Describe the location/general landmarks around " + address + ". No filler sentences needed.",
+        "Generate 1 brief facts about the local traditions followed in this area" + address + "No filler sentences needed.  Do not say that you can assist/help etc.",
         "Generate some information about the historical significance of following area:" + address
     ]
-    summary_titles = ['History', 'Culture and traditions', 'History']
+    summary_titles = ['History', 'Culture', 'traditions']
 
     with ThreadPoolExecutor() as executor:
         for i in range(3):
@@ -91,21 +91,26 @@ def get_cards(address):
 
     co = cohere.Client("lbVD3M8JdmStmrzFBqOS0CtfEZqSLxclsaRltsQ3")
 
-    response = co.chat(
-        model="command",
-        message=final_summary,
-        documents=documents
-    )
-    lst.append(response.text)
+    joinedString = json.dumps(documents)
+
+    response = co.summarize( 
+    text=joinedString,
+    length='short',
+    format='bullets',
+    model='command-light',
+    additional_command='Formal Writing. No questions should be asked or posed. No need to say that you can assist or help in any further questions.',
+    temperature=0.3,
+    ) 
+    lst.append(response.summary)
 
     prompts = [
-        "Generate a short poem relating to " + address,
+        "Generate a short poem relating to " + address + ". Do not offer help.",
         "Generate a short story relating to the " + address,
-        "Generate a haiku relating to the " + address,
-        "Generate a short story of a person's experience on or near " + address,
+        "Generate a haiku relating to the " + address + ". Do not offer help.",
+        "Generate a short story of a person's experience on or near " + address + ".   Do not offer help.",
         "Generate a movie quote/ related to this location: " + address + "List the year that movie was released.",
-        "Generate 1 trivia question relating to this area near this area/ country: " + address,
-        "Generate a fact about this country in " + address + "'s national language"
+        "Generate 1 trivia question relating to this area near this area/ country: " + address + ".   Do not offer help.",
+        "Generate a fact about this country in " + address + "'s national language.  Do not offer help."
     ]
 
     temperatures = [3, 3, 3.5, 2, 2, 1.5, 1.0]
