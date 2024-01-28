@@ -29,14 +29,19 @@ const options = {
 if (!redDot) {
   console.log("Img not loaded yet");
 }
-const MapComponent = ({showImgData, setCanSubmit}) => {
+const MapComponent = ({ showImgData, setCanSubmit }) => {
   const [center, setCenter] = useState(initialCenter);
   const [autocomplete, setAutocomplete] = useState(null);
 
   const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
 
   const [imgDataArr, setImgDataArr] = useState([]);
-
+  const [imgDataTextInfo, setImgDataTextInfo] = useState({
+    address: "",
+    card1: "",
+    card2: "",
+    summary: "",
+  });
   const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   if (!googleMapsApiKey) {
@@ -57,13 +62,30 @@ const MapComponent = ({showImgData, setCanSubmit}) => {
         // const res = await axios.get(
         //   `http://localhost:${localPort}/get-location?lat=${sendLat}&lon=${sendLng}`
         // );
-
         // console.log("res data axios get: ", res.data);
-
+        //const imgDataObj = res.data
         // //set img arr state using res.data
-        // setImgDataArr((prev) => [...prev, res.data]);
-
-
+        // if(!imgDataObj){
+        //   console.error("Not an object");
+        //   return null
+        // }
+        //convert imgDataObj.image_urls to array AND reverse
+        // const imgArray = Object.entries(imgDataObj.image_urls).map(
+        //   ([year, imgSrc]) => {
+        //     const formattedObj = { year: year, imgSrc: imgSrc };
+        //     return formattedObj;
+        //   }
+        // ).reverse();
+        // console.log("converted reversed array: ", imgArray);
+        // setImgDataArr((prev) => [...prev, imgArray ]);
+        
+        // setImgDataTextInfo((prev) => ({
+        //   ...prev,
+        //   address: imgDataObj.address,
+        //   card1: imgDataObj.address,
+        //   card2: imgDataObj.card2,
+        //   summary: imgDataObj.summary,
+        // }));
       } catch (error) {
         console.error(error);
       }
@@ -82,7 +104,6 @@ const MapComponent = ({showImgData, setCanSubmit}) => {
     if (autocomplete !== null) {
       const place = autocomplete.getPlace();
 
-
       console.log("place from autcomplete.getPlace()", place);
       const lat = place.geometry.location.lat();
       const lng = place.geometry.location.lng();
@@ -95,7 +116,7 @@ const MapComponent = ({showImgData, setCanSubmit}) => {
 
       setCoordinates({ lat, lng });
 
-      setCanSubmit(true)
+      setCanSubmit(true);
     } else {
       console.log("Autocomplete is not loaded yet!");
     }
@@ -106,7 +127,6 @@ const MapComponent = ({showImgData, setCanSubmit}) => {
       <LoadScript googleMapsApiKey={googleMapsApiKey} libraries={mapsLibConfig}>
         <Autocomplete onLoad={onLoad} onPlaceChanged={onPlaceChanged}>
           <input
-            
             type="text"
             placeholder="Search a location"
             style={{
@@ -144,7 +164,12 @@ const MapComponent = ({showImgData, setCanSubmit}) => {
           />
         </GoogleMap>
       </LoadScript>
-      {showImgData && <TimeLinePage imgData={imgDataArr} />}
+      {showImgData && (
+        <TimeLinePage
+          imgDataArr={imgDataArr}
+          imgDataTextInfo={imgDataTextInfo}
+        />
+      )}
     </>
   );
 };

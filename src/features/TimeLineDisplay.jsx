@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TimeLineContent from "./TimeLineContent";
 
 //arrows components
-const TimeLineDisplay = ({ imgDataArr }) => {
+const TimeLineDisplay = ({ imgDataArr, imgDataTextInfo }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   if (!Array.isArray(imgDataArr)) {
@@ -10,23 +10,21 @@ const TimeLineDisplay = ({ imgDataArr }) => {
     return null;
   }
 
-  const onPreviousClick = () =>{
-
-    if(currentIndex === 0){
-        console.log("Start of images array: ", currentIndex);
-        return null
+  const onPreviousClick = () => {
+    if (currentIndex === 0) {
+      console.log("Start of images array: ", currentIndex);
+      return null;
     }
-    setCurrentIndex(currentIndex-1)
-  }
+    setCurrentIndex(currentIndex - 1);
+  };
 
   const onNextClick = () => {
-
-    if(currentIndex === imgDataArr.length - 1){
-        console.log("End of images array: ", currentIndex);
-        return null
+    if (currentIndex === imgDataArr.length - 1) {
+      console.log("End of images array: ", currentIndex);
+      return null;
     }
-    setCurrentIndex(currentIndex+1)
-  }
+    setCurrentIndex(currentIndex + 1);
+  };
   if (!Array.isArray(imgDataArr)) {
     console.error("img data must be n array");
     return null;
@@ -41,19 +39,20 @@ const TimeLineDisplay = ({ imgDataArr }) => {
         justifyContent: "center",
       }}
     >
-    
-      
-      <TimeLineContent imgData={imgDataArr[currentIndex]} index={currentIndex} />
+      <TimeLineContent
+        imgData={imgDataArr[currentIndex]}
+        index={currentIndex}
+        imgDataTextInfo={imgDataTextInfo}
+      />
 
-<div>
-<button id="decrementImage" type="button" onClick={onPreviousClick}>
-        {"<"}
-      </button>
-      <button id="incrementImage" type="button" onClick={onNextClick}>
-        {">"}
-      </button>
-</div>
-      
+      <div>
+        <button id="decrementImage" type="button" onClick={onPreviousClick}>
+          {"<"}
+        </button>
+        <button id="incrementImage" type="button" onClick={onNextClick}>
+          {">"}
+        </button>
+      </div>
     </div>
   );
 };
