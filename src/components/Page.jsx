@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Page.css";
 import MapComponent from "./Map";
 import Typewriter from "typewriter-effect";
-import { useNavigate } from "react-router-dom";
 
 const Page = () => {
 
-  const naviagte = useNavigate()
+  const [showImgData, setShowImgData] = useState(false);
+  const [canSubmit, setCanSubmit] = useState(false)
+  const onSubmitClick = (e) => {
 
-  const onSubmitClick = () => {
-
-    console.log("To timeline page");
-    naviagte("/timeline")
+    if(!canSubmit){
+        console.log("Must have an img to submit~!");
+        return null
+    }
+    console.log("show Timeline images");
+    setShowImgData(true)
+    
   }
   return (
     <div className="container">
@@ -32,9 +36,8 @@ const Page = () => {
         </nav>
       <main>
         <section className="main-content">
-            <button>Here comes Google Map Searching</button>
-            <button type="button" onClick={onSubmitClick}>SUBMIT</button>
-          <MapComponent />
+            <button type="button" onClick={onSubmitClick} style={{margin: "10px", padding: "10px"}}>SUBMIT</button>
+          <MapComponent showImgData={showImgData} setCanSubmit={setCanSubmit}/>
 
         </section>
 

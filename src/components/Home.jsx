@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <>
       <Head />
-      <Link to={"/timeline"}>To timeline</Link>
+      {/* <Link to={"/timeline"}>To timeline</Link> */}
       <Page />
     </>
   );

@@ -1,21 +1,16 @@
-import React from 'react';
-import {Head, Page} from "./components";
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from './components/Home';
-import TimeLinePage from './features/TimeLinePage';
+import Home from "./components/Home";
 
 const App = () => {
   return (
     <BrowserRouter>
-
-        <Routes>
-          <Route path='/' element={<Home/>}/>
-          <Route path="/timeline" element={<TimeLinePage/>}/>
-        </Routes>
-       
-
+      <Routes>
+    
+          <Route path="/" element={<Home />} />
+      </Routes>
     </BrowserRouter>
-  )
-}
+  );
+};
 
 export default App;
