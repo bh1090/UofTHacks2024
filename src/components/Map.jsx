@@ -77,8 +77,7 @@ const MapComponent = ({ showImgData, setCanSubmit }) => {
         //   }
         // ).reverse();
         // console.log("converted reversed array: ", imgArray);
-        // setImgDataArr((prev) => [...prev, imgArray ]);
-        
+        // setImgDataArr((prev) => [...prev, ...imgArray ]);
         // setImgDataTextInfo((prev) => ({
         //   ...prev,
         //   address: imgDataObj.address,
@@ -86,6 +85,7 @@ const MapComponent = ({ showImgData, setCanSubmit }) => {
         //   card2: imgDataObj.card2,
         //   summary: imgDataObj.summary,
         // }));
+        // setCanSubmit(true);
       } catch (error) {
         console.error(error);
       }
@@ -99,10 +99,10 @@ const MapComponent = ({ showImgData, setCanSubmit }) => {
     setAutocomplete(autocompleteInstance);
   };
 
-  const onPlaceChanged = () => {
+  const onPlaceChanged = async () => {
     console.log("auto complelte: ", autocomplete);
     if (autocomplete !== null) {
-      const place = autocomplete.getPlace();
+      const place = await autocomplete.getPlace();
 
       console.log("place from autcomplete.getPlace()", place);
       const lat = place.geometry.location.lat();
@@ -116,7 +116,7 @@ const MapComponent = ({ showImgData, setCanSubmit }) => {
 
       setCoordinates({ lat, lng });
 
-      setCanSubmit(true);
+      // setCanSubmit(true);
     } else {
       console.log("Autocomplete is not loaded yet!");
     }
@@ -132,18 +132,15 @@ const MapComponent = ({ showImgData, setCanSubmit }) => {
             style={{
               boxSizing: `border-box`,
               border: `1px solid transparent`,
-              width: `240px`,
-              height: `32px`,
+              width: `400px`,
+              height: `38px`,
               padding: `0 12px`,
               borderRadius: `3px`,
               boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
               fontSize: `14px`,
               outline: `none`,
               textOverflow: `ellipses`,
-              position: "absolute",
-              top: "10px",
-              left: "50%",
-              marginLeft: "-120px",
+              marginBottom: "30px",
             }}
           />
         </Autocomplete>

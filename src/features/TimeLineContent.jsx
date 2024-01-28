@@ -19,7 +19,8 @@ const TimeLineContent = ({ imgData, index, imgDataTextInfo }) => {
       {/* <div className="image-text-container"> */}
       <div className="content-size">
         <img
-          src={imgData.imgSrc}
+          // src={imgData.imgSrc}
+          src={imgSrc}
           alt={`Img no: ${index + 1}`}
           style={{
             width: "100%",
@@ -29,13 +30,14 @@ const TimeLineContent = ({ imgData, index, imgDataTextInfo }) => {
             // /borderRadius: '5%'/
           }}
         />
+        <p>Year: {imgData?.year}</p>
       </div>
       <div className="content-size">
         <p>
-          Card1: {imgDataTextInfo.card1}
-          Card2: {imgDataTextInfo.card2}
+          Card1: {imgDataTextInfo?.card1}
+          Card2: {imgDataTextInfo?.card2}
         </p>
-        <p>Summary: {imgDataTextInfo.summary}</p>
+        <p>Summary: {imgDataTextInfo?.summary}</p>
       </div>
     </div>
     // </div>

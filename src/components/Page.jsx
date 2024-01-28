@@ -37,9 +37,9 @@ const Page = () => {
           <button
             type="button"
             onClick={onSubmitClick}
-            style={{ margin: "10px", padding: "10px" }}
+            className="search-button"
           >
-            SUBMIT
+            JUST GO
           </button>
           <MapComponent showImgData={showImgData} setCanSubmit={setCanSubmit} />
         </section>

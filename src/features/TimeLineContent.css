@@ -2,6 +2,12 @@
     width: 50%; 
     padding: 10px; 
     box-sizing: border-box;
+
+    /* added for year display */
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; */
 }
 
 img {

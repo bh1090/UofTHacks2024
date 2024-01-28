@@ -1,29 +1,30 @@
-body, html {
+body,
+html {
   width: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   background-color: #d7c29b; /* Cream color for the page background */
 }
 
 .title-bar {
   text-align: center;
   background: transparent;
-  padding: 10px 20px;
+  padding: 0px 10px;
   color: #ffffff; /* Title color */
 }
 
 .container {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   background: #fff9ef;
-  width: 700px; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  width: 750px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
 }
 
 header {
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   padding-bottom: 20px;
   border-bottom: 2px solid #3a2c2a;
 }
@@ -36,9 +37,10 @@ header h1 {
 .typeAnimation {
   font-size: 25px;
   color: #3a2c2a;
-  border-bottom: 2px solid #3a2c2a; 
+  border-bottom: 2px solid #3a2c2a;
   padding-bottom: 5px;
   font-weight: bold;
+  padding-left: 32px;
 }
 
 nav ul {
@@ -48,16 +50,15 @@ nav ul {
   justify-content: center; /* Center navigation links */
   gap: 25px;
   font-size: 1.2em; /* Increase the font size for navigation */
-  border-bottom: 2px solid #3a2c2a; 
+  border-bottom: 2px solid #3a2c2a;
 }
 
 nav ul li a {
   text-decoration: none;
   color: #333;
   padding-bottom: 5px; /* Optional: Adds space between the link text and the underline */
-  display: inline-block; 
+  display: inline-block;
 }
-
 
 main {
   display: flex;
@@ -65,7 +66,8 @@ main {
   padding: 20px;
 }
 
-.main-content, .sidebar {
+.main-content,
+.sidebar {
   padding: 10px;
   color: #333;
 }
@@ -105,18 +107,23 @@ button {
     flex-direction: column;
   }
 
-  .main-content, .sidebar {
+  .main-content,
+  .sidebar {
     width: 100%;
     padding: 10px;
   }
 
   .buttons {
     flex-direction: column; /* Stack buttons vertically on smaller screens */
-
   }
 
   .buttons button {
     width: 100%; /* Full width buttons on smaller screens */
     margin: 10px 0; /* Adjust margin for vertical stacking */
   }
+}
+
+.search-button {
+  position: absolute;
+  margin-left: 500px;
 }

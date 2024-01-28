@@ -1,5 +1,4 @@
 import React from "react";
-import TimeLineContent from "./TimeLineContent";
 import TimeLineDisplay from "./TimeLineDisplay";
 
 const TimeLinePage = ({ imgDataArr, imgDataTextInfo }) => {
@@ -11,7 +10,7 @@ const TimeLinePage = ({ imgDataArr, imgDataTextInfo }) => {
 //   const imgArr = [1, 2, 3];
   const timeLineHeader = (
     <header>
-      <h1 style={{ marginTop: "50px" }}>{imgDataTextInfo.address}</h1>
+      <h1 style={{ marginTop: "50px" }}>{imgDataTextInfo?.address}</h1>
     </header>
   );
 
