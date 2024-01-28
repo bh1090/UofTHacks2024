@@ -22,8 +22,8 @@ def googleImageAPI(address):
             return []
 
     # Example usage
-    api_key = ""
-    cx = ""
+    api_key = "AIzaSyAGGLLBNcQSKGzJWlv2xIcIDviogUIU2gY"
+    cx = "c7b5d072f73d642a3"
     query = address
 
     images = fetch_images(query, api_key, cx, num=1)

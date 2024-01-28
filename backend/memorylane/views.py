@@ -10,7 +10,7 @@ import json
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
-import uuid
+from fetch_images import googleImageAPI
 
 cred = credentials.Certificate('./memorylane-412506-8c9829f4fd27.json')
 app = firebase_admin.initialize_app(cred)
@@ -38,10 +38,9 @@ def get_location_view(request):
     image_urls = image_urls_future.result()
 
     if image_urls == {}:
-        # get an image with address
-        # get an image url
-        image_url = ''
-        image_urls = {'': image_url}
+        url = googleImageAPI(address)
+        image_urls = {'': url}
+
     cards = cards_future.result()
     posts = posts_future.result()
 
