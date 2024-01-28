@@ -8,8 +8,8 @@ const Page = () => {
   const [canSubmit, setCanSubmit] = useState(false);
   const onSubmitClick = (e) => {
     if (!canSubmit) {
-      console.log("Must have an img to submit~!");
-      return null;
+      console.log("Must have an img to submit~! REturn null else");
+      // return null;
     }
     console.log("show Timeline images");
     setShowImgData(true);

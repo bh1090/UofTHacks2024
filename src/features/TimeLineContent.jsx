@@ -19,8 +19,8 @@ const TimeLineContent = ({ imgData, index, imgDataTextInfo }) => {
       {/* <div className="image-text-container"> */}
       <div className="content-size">
         <img
-          // src={imgData.imgSrc}
-          src={imgSrc}
+          src={imgData?.imgSrc}
+          // src={imgSrc}
           alt={`Img no: ${index + 1}`}
           style={{
             width: "100%",

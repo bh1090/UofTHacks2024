@@ -12,6 +12,8 @@ import axios from "axios";
 import redDot from "../images/red-dot.png";
 import TimeLinePage from "../features/TimeLinePage";
 
+import {getDownloadURL, getStorage, listAll, ref} from "firebase/storage"
+
 const mapContainerStyle = {
   width: "100%",
   height: "400px",
@@ -59,6 +61,32 @@ const MapComponent = ({ showImgData, setCanSubmit }) => {
       const localPort = 8000;
 
       try {
+
+        //get firebase imgs
+
+        const storage = getStorage()
+        const storageRef = ref(storage, "nostalgia")
+
+        const filesResult = await listAll(storageRef)
+
+        const promiseOperations = filesResult.items.map( async (img) => {
+
+          const downloadUrl = await getDownloadURL(img)
+
+          console.log("downlodadulr: ",downloadUrl);
+
+          return downloadUrl
+        })
+
+        const imgDownloadUrls = await Promise.all(promiseOperations)
+
+        const formattedImgDataArr = imgDownloadUrls.map((url) => {
+
+          //if (!year)
+          const imgObj = {year: "" , imgSrc: url}
+          console.log('imgObj firebase formatted: ', imgObj);
+          return imgObj
+        })
         // const res = await axios.get(
         //   `http://localhost:${localPort}/get-location?lat=${sendLat}&lon=${sendLng}`
         // );
@@ -69,15 +97,20 @@ const MapComponent = ({ showImgData, setCanSubmit }) => {
         //   console.error("Not an object");
         //   return null
         // }
-        //convert imgDataObj.image_urls to array AND reverse
+      //  //convert imgDataObj.image_urls to array AND reverse
         // const imgArray = Object.entries(imgDataObj.image_urls).map(
         //   ([year, imgSrc]) => {
-        //     const formattedObj = { year: year, imgSrc: imgSrc };
+        // const formattedObj = {
+        //   year: year,
+        //   imgSrc: `http://localhost:${localPort}/${imgSrc}`,
+        // };
         //     return formattedObj;
         //   }
         // ).reverse();
         // console.log("converted reversed array: ", imgArray);
-        // setImgDataArr((prev) => [...prev, ...imgArray ]);
+        // setImgDataArr((prev) => [...prev, ...imgArray, ...formattedImgDataArr ]);
+        setImgDataArr((prev) => [...prev, ...formattedImgDataArr ]);
+        
         // setImgDataTextInfo((prev) => ({
         //   ...prev,
         //   address: imgDataObj.address,
@@ -85,7 +118,11 @@ const MapComponent = ({ showImgData, setCanSubmit }) => {
         //   card2: imgDataObj.card2,
         //   summary: imgDataObj.summary,
         // }));
-        // setCanSubmit(true);
+
+
+        ////setCanSubmit(true);
+        
+
       } catch (error) {
         console.error(error);
       }
